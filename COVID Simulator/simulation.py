@@ -1,7 +1,7 @@
 import random
 
 from agent import Agent
-from math import pi, cos, sin, sqrt
+from math import pi, cos, sin
 
 
 class Simulation:
@@ -134,21 +134,53 @@ class Simulation:
 
         agents_to_infect = set()
 
-        for infected_agent in self.agents:
-            if infected_agent.state == "infected" and infected_agent.time_since_infection < self.incubation_time:
+        cell_size = self.infection_radius
+        grid = {}
 
-                for other_agent in self.agents:
-                    if other_agent.state == "susceptible" and other_agent != infected_agent:
-                        dx = other_agent.x - infected_agent.x
-                        dy = other_agent.y - infected_agent.y
-                        distance_sq = dx ** 2 + dy ** 2
+        for agent in self.agents:
+            cell_x = int(agent.x // cell_size)
+            cell_y = int(agent.y // cell_size)
 
-                        if distance_sq < self.infection_radius ** 2:
-                            probability_effective = self.infection_probability / 100
-                            probability_effective = max(0, probability_effective)
-                            if random.random() <= probability_effective:
-                                agents_to_infect.add((other_agent, infected_agent))
+            grid.setdefault((cell_x, cell_y), []).append(agent)
         
+        neighbor_offsets = [
+            (-1, -1), (-1, 0), (-1, 1),
+            (0, -1), (0, 0), (0, 1),
+            (1, -1), (1, 0), (1, 1)
+        ]
+
+        radius_sq = self.infection_radius ** 2
+
+        for infected_agent in self.agents:
+            if infected_agent.state != "infected":
+                continue
+
+            if infected_agent.time_since_infection >= self.incubation_time:
+                continue
+
+            cell_x = int(infected_agent.x // cell_size)
+            cell_y = int(infected_agent.y // cell_size)
+
+            for dx_cell, dy_cell in neighbor_offsets:
+                neighbor_cell = (cell_x + dx_cell, cell_y + dy_cell)
+
+                if neighbor_cell not in grid:
+                    continue
+
+                for other_agent in grid[neighbor_cell]:
+                    if other_agent.state != "susceptible" or other_agent is infected_agent:
+                        continue
+                    
+                    dx = other_agent.x - infected_agent.x
+                    dy = other_agent.y - infected_agent.y
+                    distance_sq = dx ** 2 + dy ** 2
+
+                    if distance_sq < radius_sq:
+                        probability_effective = max(0, self.infection_probability / 100)
+                        if random.random() <= probability_effective:
+                            agents_to_infect.add((other_agent, infected_agent))
+
+
         for agent, source in agents_to_infect:
             agent.state = "infected"
             agent.time_since_infection = 0
