@@ -1,29 +1,39 @@
-#📈 Least Squares Linear Fit in Python
+# Least Squares Linear Fit in Python
 
-This project implements a **linear least squares regression** in Python and visualizes the result using `matplotlib`.
+This project implements a **linear least squares regression** from scratch in Python and visualizes the result using `matplotlib`.
 
 It computes the best-fit line:
 
 y = ax + b
 
-along with the **uncertainties of the coeeficients (`error_a`, `error_b`)** and displays them directly on the plot.
+along with the **uncertainties of the coefficients** (`error_a`, `error_b`) and displays them directly on the plot.
 
+---
 
 ## Method
-The program uses the **analytical solution to linear least squares:**
+
+The program uses the **analytical solution to linear least squares**:
 
 * Slope:
-    a = (N Σxy − Σx Σy) / (N Σx² − (Σx)²)
+
+  a = (N Σxy − Σx Σy) / (N Σx² − (Σx)²)
+
 * Intercept:
-    b = (Σy − a Σx) / N
+
+  b = (Σy − a Σx) / N
+
 * Variance estimate:
-    σ² = Σ(yi − (axi + b))² / (N − 2)
+
+  σ² = Σ(yi − (axi + b))² / (N − 2)
+
 * Uncertainties:
-    error_a = √(N σ² / denominator)
-    error_b = √(σ² Σx² / denominator)
 
+  error_a = √(N σ² / denominator)
+  error_b = √(σ² Σx² / denominator)
 
-## Data format
+---
+
+## Data Format
 
 The input file should look like:
 
@@ -33,24 +43,36 @@ index   x_value   y_value
 
 Example:
 
+```
 # header
 # header
-1       10.0        2.1
-2       20.0        4.3
-3       30.0        6.2
+1   10.0   2.1
+2   20.0   4.3
+3   30.0   6.2
+```
 
+---
 
 ## How to Run
-    1. Install dependencies:
 
-        `pip install numpy matplotlib`
+1. Install dependencies:
 
-    2. Place your data file (`data_RMS.txt`) in the project directory.
-    3. Run:
-        `python main.py`
+```
+pip install numpy matplotlib
+```
 
+2. Place your data file (e.g. `data_RMS.txt`) in the project directory.
+
+3. Run:
+
+```
+python main.py
+```
+
+---
 
 ## Output
+
 The program generates a plot showing:
 
 * Blue points → measured data
@@ -60,8 +82,9 @@ The program generates a plot showing:
 Example:
 
 a = 1.234 ± 0.056
-b = 0.789 ± 0.032 
+b = 0.789 ± 0.032
 
+---
 
 ## Notes
 
@@ -69,8 +92,12 @@ b = 0.789 ± 0.032
 * Uses **unweighted least squares**
 * Requires at least 3 data points
 
-## Possible improvements
+---
+
+## Possible Improvements
 
 * Add error bars for measurements
 * Support weighted least squares
 * Load other file formats (CSV, JSON)
+
+---
