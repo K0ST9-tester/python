@@ -2,20 +2,125 @@
 
 ## Problem Description
 
-Write a agent-based simulator visualizing spread of an infectious disease. An agent is a single point in 2D space, representing a human being. The rules of the simulation are as follows:
+An agent-based simulation of infectious disease spread in a 2D environment, inspired by the dynamics of COVID-19 transmission. The project visualizes how a disease propagates through a moving population and analyzes the impact of parameters such as mobility, infection probability, incubation time, mortality, and population density.
 
-1. The simulation should consist of a number of time-steps, in which each agent moves randomly by a distance defined by its mobility parameter *V*. The distance every agent moves in one time-step is chosen randomly in the range [0, 2×*V*].
-2. Every agent can be in one of three states: *susceptible*, *ill*, or *immune* (either vaccinated or after recovery). There is one more state possible: *dead*, which is equivalent to removing the agent from the simulation (however, the death count should be tracked).
-3. If an *susceptible* agent is within the distance *d* (for COVID19 it is estimated to 1–2 m) from the *ill* agent, there is a *p* probability of changing the state to *ill*.
-4. After incubation time *t*<sub>1</sub> (measured in time steps) from the infection, the mobility *v* of the *ill* agent is reduced to 0 (the person has developed symptoms and has been isolated).
-5. After time *t*<sub>2</sub> from the infection, the state of *ill* agent is changed to *immune* or *dead*. The mortality rate *m* is the probability of death.
+The simulation is written in Python using an object-oriented design and provides both:
 
-Your task is to create an animation of the disease spread and plot the number of total cases, active cases and deaths as a function of time. You should investigate the spread of the disease depending on the parameters *V*, *p*, *t*<sub>1</sub>, *t*<sub>2</sub>, and *m* and also of the total population number and average population density (average distance between the agents). In each case, estimate the number *R*<sub>0</sub>, which is an average number of *susceptible* people every *ill* person can infect. Investigate the impact of the social distancing (*V* parameter — mind that it does not need to be equal for every individual) on the spread of the disease.
+* **Animated visualization** of the population over time
 
-You can see a similar (although with different assumptions) simulation in a [Washington Post article](https://www.washingtonpost.com/graphics/2020/world/corona-simulator/).
+* **Statistical plots** showing epidemic dynamics
 
-## Program Requirements
 
-Your code must be object-oriented and written in such a way that it can be easily improved and extended. In particular numerical part must be separate from input/output and data visualization. For making plots and animations you **must** use either Matplotlib or Plotly. However, changing the presentation part to something else should be straightforward.
+## Features
 
-The simulation code should allow to launch simulations, specify parameters and see the results.
+* Agent-based epidemic 
+* simulation
+* Random movement in 2D space
+* Multiple agent states:
+    * Susceptible
+    * Ill
+    * Immune
+    * Dead
+* Infection spread based on distance and probability
+* Isolation after symptom development
+* Recovery or death after illness duration
+* Animated simulation using Matplotlib
+* Epidemic statistics visualization:
+    * Total cases
+    * Active cases
+    * Deaths
+* Easily configurable simulation parameters
+* Modular and extensible object-oriented architecture
+
+
+## Simulation rules
+Each agent represents a single human in a 2D environment.
+
+### Movement
+At every simulation step:
+* Each agent moves randomly
+* Movement distance is selected from the range:
+
+    ```[0, 2 x V]```
+
+where:
+* ```V``` = mobility parameter of the agent
+
+
+### Infection
+
+A susceptible agent becomes infected when:
+
+* It is within distance ```d``` of an ill agent
+* Infection occurs with probability ```p```
+
+
+### Disease Progression
+
+After infection:
+
+1. Incubation period (```t1```)
+    * The infected agent becomes isolated
+    * Mobility is reduced to 0
+2. Illness duration (```t2```)
+    * The agent either:
+        * Recovers and becomes immune
+        * Dies with probability ```m```
+
+
+## Technologies Used
+
+* Python
+* ```matplotlib.pyplot```
+* ```matplotlib.animation```
+* ```random```
+* ```math```
+
+
+## Configurable Parameters
+
+| Parameter | Description |
+|-----------|-------------|
+| `V` | Agent mobility |
+| `p` | Infection probability |
+| `d` | Infection distance |
+| `t1` | Incubation time before isolation |
+| `t2` | Disease duration before recovery/death |
+| `m` | Mortality rate |
+| `population_size` | Number of agents in the simulation |
+| `density` | Average population density |
+
+
+## Visualization
+The simulator provides:
+
+### Population Animation
+Agents are displayed as moving points in 2D space.
+
+Suggested color scheme:
+
+Blue - susceptible
+Yellow - infected
+Green - immune
+Red - dead
+
+
+## R<sub>0<sub> Estimation
+The project investigates the basic reproduction number:
+
+R<sub>0<sub>
+
+which represents the average number of susceptible individuals infected by one ill person.
+
+The simulation allows studying how:
+
+* Social distancing
+* Mobility reduction
+* Population density
+* Infection probability
+
+affect epidemic spread and the value of <code>R<sub>0<sub></code>
+
+
+## Inspiration
+This project was inspired by epidemic spread simulations and public visualizations such as the Washington Post COVID-19 simulation article. 
